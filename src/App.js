@@ -1,24 +1,41 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+
+import InfoCards from "./Components/InfoCards/InfoCards";
+import Totals from "./Components/Totals/Totals";
+import Card from "./Components/UI/Card";
+import UserInputs from "./Components/UserInputs/UserInputs";
 
 function App() {
+  const [cost, setCost] = useState(0);
+  const [desc, setDesc] = useState("");
+  const [total, setTotal] = useState(0);
+  const [infoCard, setInfoCard] = useState([]);
+
+  const handleProfit = (value) => {
+    setCost(value);
+    console.log(total);
+  };
+  const handleDesc = (value) => {
+    setDesc(value);
+  };
+  const handleTotal = (event) => {
+    event.preventDefault();
+    setTotal((prev) => +prev + +cost);
+
+    setInfoCard([...infoCard, { value: cost, desc: desc }]);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Card>
+      <UserInputs
+        profit={cost}
+        onProfit={handleProfit}
+        onDesc={handleDesc}
+        onTotal={handleTotal}
+      />
+      <InfoCards infoCardContent={infoCard} />
+      <Totals cost={cost} total={total} />
+    </Card>
   );
 }
 
